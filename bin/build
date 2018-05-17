@@ -4,6 +4,14 @@ set -eou pipefail
 
 [[ "$#" == 1 ]] && cd "$1"
 
+if [[ ! -f Dockerfile ]]; then
+  echo "Usage: $(basename $BASH_SOURCE) [directory]"
+  echo "Builds the docker image locally"
+  echo
+  echo "Error:  No Dockerfile found"
+  exit 1
+fi
+
 user="superorbital"
 image=${PWD##*/}
 
