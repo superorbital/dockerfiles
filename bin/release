@@ -33,7 +33,7 @@ build
 # Tag and push in Git
 git add -A
 git commit -m "version $version_string"
-git tag -a "$version" -m "version $version_string"
+git tag -a "$version_string" -m "version $version_string"
 git push
 git push --tags
 
