@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+[[ "$#" == 1 ]] && cd "$1"
+
+user="superorbital"
+image=${PWD##*/}
+
+git pull --rebase
+
+if [[ ! -f VERSION ]]; then
+  echo "0" > VERSION
+fi
+
+current_version_number="$(< VERSION)"
+new_version_number="$((current_version_number+1))"
+version_string="v$new_version_number"
+
+echo "version: $version_string"
+echo $new_version_number > VERSION
+
+./build.sh
+
+# Tag and push in Git
+git add -A
+git commit -m "version $version_string"
+git tag -a "$version" -m "version $version_string"
+git push
+git push --tags
+
+# Tag and push in Dockerhub
+docker tag $user/$image:latest $user/$image:$version_string
+docker push $user/$image:latest
+docker push $user/$image:$version_string
+docker images $user/$image

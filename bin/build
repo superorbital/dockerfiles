@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+[[ "$#" == 1 ]] && cd "$1"
+
+user="superorbital"
+image=${PWD##*/}
+
+docker build -qt "$user/$image:latest" .
