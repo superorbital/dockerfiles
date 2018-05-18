@@ -9,19 +9,19 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    '<h1>Hello!</h1>'
+    "Hello."
   end
 
   get '/env' do
-    '<ul>' + ENV.each.map { |k, v| "<li><b>#{k}:</b> #{v}</li>" }.join + '</ul>'
+    ENV.inspect
   end
 
   get '/disk' do
-    "<strong>Disk:</strong><br/><pre>#{`df -h`}</pre>"
+    `df -h`
   end
 
   get '/memory' do
-    "<strong>Memory:</strong><br/><pre>#{`free -m`}</pre>"
+    `free -m`
   end
 
   get '/exit' do
