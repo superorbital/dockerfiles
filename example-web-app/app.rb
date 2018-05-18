@@ -13,7 +13,7 @@ class App < Sinatra::Base
   end
 
   get '/env' do
-    ENV.inspect
+    `env`
   end
 
   get '/disk' do
