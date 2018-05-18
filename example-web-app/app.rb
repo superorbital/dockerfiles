@@ -1,6 +1,3 @@
-require 'sinatra'
-require 'sinatra/base'
-
 class App < Sinatra::Base
   set :bind, '0.0.0.0'
 
@@ -9,13 +6,13 @@ class App < Sinatra::Base
   end
 
   get '/' do
-<<-EOS
-Hello!  I'm:
-  version: #{version} 
-  pod:     #{pod} 
-  address: #{address}
-  node:    #{node} 
-EOS
+    <<-EOS.unindent
+      Hello!  I'm:
+        version: #{version} 
+        pod:     #{pod} 
+        address: #{address}
+        node:    #{node} 
+    EOS
   end
 
   get '/env' do

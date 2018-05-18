@@ -11,12 +11,14 @@ GEM
       rack-protection (= 2.0.1)
       tilt (~> 2.0)
     tilt (2.0.8)
+    unindent (1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   sinatra
+  unindent
 
 BUNDLED WITH
    1.16.1
