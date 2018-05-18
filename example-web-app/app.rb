@@ -13,11 +13,11 @@ class App < Sinatra::Base
   end
 
   get '/env' do
-    `env`
+    `env | sort`
   end
 
   get '/disk' do
-    `df -h`
+    `df -h | sort`
   end
 
   get '/memory' do
