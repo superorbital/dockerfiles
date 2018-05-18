@@ -9,7 +9,13 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    "Hello!  I'm pod #{pod} running #{version} on node #{node} with address #{address}"
+<<-EOS
+Hello!  I'm:
+  version: #{version} 
+  pod:     #{pod} 
+  address: #{address}
+  node:    #{node} 
+EOS
   end
 
   get '/env' do
