@@ -6,12 +6,12 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    str = "Hello!  I'm:"
-    str += "  version: #{version}"  if version
-    str += "  pod:     #{pod}"      if pod
-    str += "  address: #{address}"  if address
-    str += "  node:    #{node}"     if node
-    return str
+    output = ["Hello!  I'm:"]
+    output.push "  version: #{version}"  if version
+    output.push "  pod:     #{pod}"      if pod
+    output.push "  address: #{address}"  if address
+    output.push "  node:    #{node}"     if node
+    return output.join("\n")
   end
 
   get '/env' do
