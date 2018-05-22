@@ -6,13 +6,12 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    <<-EOS.unindent
-      Hello!  I'm:
-        version: #{version} 
-        pod:     #{pod} 
-        address: #{address}
-        node:    #{node} 
-    EOS
+    str = "Hello!  I'm:"
+    str += "  version: #{version}"  if version
+    str += "  pod:     #{pod}"      if pod
+    str += "  address: #{address}"  if address
+    str += "  node:    #{node}"     if node
+    return str
   end
 
   get '/env' do
@@ -20,7 +19,7 @@ class App < Sinatra::Base
   end
 
   get '/disk' do
-    `df -h | sort`
+    `df -h`
   end
 
   get '/memory' do
