@@ -9,5 +9,5 @@ COPY . /app
 EXPOSE 5000
 
 ENTRYPOINT ["bundle"]
-CMD ["exec", "rackup", "--host", "0.0.0.0", "-p", "5000"]
+CMD ["exec", "ruby", "app.rb"]
 
