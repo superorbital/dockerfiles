@@ -9,7 +9,6 @@ ARG STRESS_VER
 ENV STRESS_VER ${STRESS_VER:-0.08.17}
 ADD https://github.com/ColinIanKing/stress-ng/archive/V${STRESS_VER}.tar.gz .
 RUN tar -xf V${STRESS_VER}.tar.gz && mv stress-ng-${STRESS_VER} stress-ng
-
 # make static version
 WORKDIR /code/stress-ng
 RUN STATIC=1 make
@@ -30,6 +29,9 @@ RUN apk add --no-cache net-tools
 RUN apk add --no-cache netcat-openbsd
 RUN apk add --no-cache tcpdump 
 RUN apk add --no-cache vim 
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 /usr/bin/dumb-init
+RUN chmod +x /usr/bin/dumb-init
 
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["/bin/bash", "-il"]
 
