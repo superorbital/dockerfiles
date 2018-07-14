@@ -8,6 +8,9 @@ RUN bundle install
 COPY . /app
 EXPOSE 5000
 
-ENTRYPOINT ["bundle"]
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 /usr/bin/dumb-init
+RUN chmod +x /usr/bin/dumb-init
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "bundle"]
 CMD ["exec", "ruby", "app.rb"]
 
