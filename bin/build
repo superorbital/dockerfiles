@@ -15,4 +15,4 @@ fi
 user="superorbital"
 image=${PWD##*/}
 
-docker build -qt "$user/$image:latest" .
+docker build -t "$user/$image:latest" .
