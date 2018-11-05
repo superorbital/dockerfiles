@@ -4,6 +4,12 @@ Bundler.require
 
 $stdout.sync = true
 
+Signal.trap("TERM") do
+  puts "Caught a TERM signal.  Sleeping for 3 seconds and shutting down."
+  sleep 3
+  exit
+end
+
 class App < Sinatra::Base
   puts "My pid is #{Process.pid}"
 
