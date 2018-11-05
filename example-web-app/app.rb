@@ -13,6 +13,7 @@ class App < Sinatra::Base
     output.push "  pod:     #{pod}"      if pod
     output.push "  address: #{address}"  if address
     output.push "  node:    #{node}"     if node
+    output.push ""
     return output.join("\n")
   end
 
