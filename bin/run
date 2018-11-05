@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+[[ "$#" == 1 ]] && cd "$1"
+
+if [[ ! -f Dockerfile ]]; then
+  echo "Usage: $(basename $BASH_SOURCE) [directory]"
+  echo "Runs the docker image locally.  Should be built, first."
+  echo
+  echo "Error:  No Dockerfile found"
+  exit 1
+fi
+
+user="superorbital"
+image=${PWD##*/}
+
+docker run "$user/$image:latest"
