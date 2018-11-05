@@ -35,7 +35,7 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_a
 RUN chmod +x /usr/bin/dumb-init
 
 ADD https://dl.k8s.io/v1.11.0/kubernetes-client-linux-amd64.tar.gz .
-RUN tar -zxf kubernetes*.tar.gz && mv kubernetes/client/bin/kubectl /usr/bin/kubectl && chmod +x /usr/bin/kubectl && rm -rf kubernetes
+RUN tar -zxf kubernetes*.tar.gz && mv kubernetes/client/bin/kubectl /usr/bin/kubectl && chmod +x /usr/bin/kubectl && rm -rf kubernetes*
 
 ADD https://releases.hashicorp.com/vault/0.10.3/vault_0.10.3_linux_amd64.zip .
 RUN unzip vault*.zip && mv vault /usr/bin/vault && chmod +x /usr/bin/vault && rm vault*.zip
