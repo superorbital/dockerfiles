@@ -21,8 +21,8 @@ set -x
 # Tag and push in Git
 git add -A
 git commit -m "Tagging $image at $version_string"
-git tag -a "$image/$version_string" -m "Tagging $image at $version_string"
 git push
+git tag -a "$image/$version_string" -m "Tagging $image at $version_string"
 git push --tags
 
 # Tag and push in Dockerhub
