@@ -6,7 +6,7 @@ set -eou pipefail
 
 if [[ ! -f Dockerfile ]]; then
   echo "Usage: $(basename $BASH_SOURCE) [directory]"
-  echo "Builds the docker image locally"
+  echo "Releases the docker image"
   echo
   echo "Error:  No Dockerfile found"
   exit 1
@@ -14,21 +14,6 @@ fi
 
 user="superorbital"
 image=${PWD##*/}
-
-git pull --rebase
-
-if [[ ! -f VERSION ]]; then
-  echo "0" > VERSION
-fi
-
-current_version_number="$(< VERSION)"
-new_version_number="$((current_version_number+1))"
-version_string="v$new_version_number"
-
-echo "version: $version_string"
-echo $new_version_number > VERSION
-
-build
 
 # Tag and push in Git
 git add -A

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+[[ "$#" == 1 ]] && cd "$1"
+
+if [[ ! -f VERSION ]]; then
+  echo "Usage: $(basename $BASH_SOURCE) [directory]"
+  echo "Bumps the version for a docker image"
+  echo
+  echo "Error:  No VERSION file found"
+  exit 1
+fi
+
+current_version_number="$(< VERSION)"
+new_version_number="$((current_version_number+1))"
+version_string="v$new_version_number"
+
+echo "version: $version_string"
+echo $new_version_number > VERSION
