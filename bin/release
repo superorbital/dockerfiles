@@ -17,8 +17,6 @@ image=${PWD##*/}
 
 git pull --rebase
 
-build
-
 if [[ ! -f VERSION ]]; then
   echo "0" > VERSION
 fi
@@ -30,10 +28,12 @@ version_string="v$new_version_number"
 echo "version: $version_string"
 echo $new_version_number > VERSION
 
+build
+
 # Tag and push in Git
 git add -A
-git commit -m "Tagging $user/$image at $version_string"
-git tag -a "$user/$image/$version_string" -m "Tagging $user/$image at $version_string"
+git commit -m "Tagging $image at $version_string"
+git tag -a "$image/$version_string" -m "Tagging $image at $version_string"
 git push
 git push --tags
 
