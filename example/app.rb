@@ -36,12 +36,10 @@ class App < Sinatra::Base
   end
 
   get '/exit' do
-    if File.exist?("/dev/termination-log")
-      File.open("/dev/termination-log", 'w') do |f| 
-        f.write("Gaaaaahhhh!  Someone hit /exit!") 
-      end
-    end
     puts "Gaaaaahhhh!  Someone hit /exit!"
+    File.open("/dev/termination-log", 'w') do |f| 
+      f.write("Gaaaaahhhh!  Someone hit /exit!") 
+    end
     Process.kill('TERM', Process.pid)
     return "Gaaaaaah!"
   end
