@@ -50,6 +50,13 @@ class Color < Sinatra::Base
   private
 end
 
+printf "Starting up."
+ENV.fetch('STARTUP_DELAY', 0).to_i.times do |n|
+  printf "."
+  sleep 1
+end
+puts
+
 Color.run!(show_exceptions: false,
            raise_errors: true,
            traps: false,
