@@ -12,10 +12,12 @@ Signal.trap("TERM") do
 end
 
 class Color < Sinatra::Base
-  puts "My pid is #{Process.pid}"
+  def color
+    ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
+  end
 
   get '/' do
-    output = {color: "unknown"}
+    output = {color: color}
     return JSON.dump(output)
   end
 
@@ -33,8 +35,8 @@ class Color < Sinatra::Base
 
   get '/exit' do
     puts "Received request for /exit. Terminating."
-    File.open("/dev/termination-log", 'w') do |f| 
-      f.write("Received request for /exit. Terminating.") 
+    File.open("/dev/termination-log", 'w') do |f|
+      f.write("Received request for /exit. Terminating.")
     end
     Process.kill('TERM', Process.pid)
     return "Received request for /exit.  Terminating."
@@ -48,9 +50,8 @@ class Color < Sinatra::Base
   private
 end
 
-Color.run!(show_exceptions: false, 
-           raise_errors: true, 
-           traps: false, 
-           bind: '0.0.0.0', 
+Color.run!(show_exceptions: false,
+           raise_errors: true,
+           traps: false,
+           bind: '0.0.0.0',
            port: 80)
-
