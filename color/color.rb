@@ -5,6 +5,8 @@ Bundler.require
 
 $stdout.sync = true
 
+ALIVE = true
+
 Signal.trap("TERM") do
   puts "Caught a TERM signal.  Sleeping for 3 seconds and shutting down."
   sleep 3
@@ -17,20 +19,11 @@ class Color < Sinatra::Base
   end
 
   get '/' do
-    output = {color: color}
-    return JSON.dump(output)
+    return JSON.dump({color: color})
   end
 
   get '/env' do
-    `env | sort`
-  end
-
-  get '/disk' do
-    `df -h`
-  end
-
-  get '/memory' do
-    `free -m`
+    return JSON.dump(ENV)
   end
 
   get '/exit' do
@@ -43,8 +36,11 @@ class Color < Sinatra::Base
   end
 
   get '/sleep' do
-    sleep 10
-    "Slept for 10 seconds"
+    sleep(10) and return "Slept for 10 seconds"
+  end
+
+  get '/hang' do
+    ::ALIVE = false
   end
 
   private
@@ -56,6 +52,16 @@ ENV.fetch('STARTUP_DELAY', 0).to_i.times do |n|
   sleep 1
 end
 puts
+
+Thread.new do
+  puts "We're alive!"
+  while ::ALIVE do
+    sleep 1
+    File.write("/tmp/heartbeat", "alive")
+  end
+  puts "We're hung :("
+  FileUtils.rm_rf("/tmp/heartbeat")
+end
 
 Color.run!(show_exceptions: false,
            raise_errors: true,
