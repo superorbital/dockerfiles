@@ -8,9 +8,9 @@ RUN bundle install
 COPY . /app
 EXPOSE 80
 
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 /usr/bin/dumb-init
-RUN chmod +x /usr/bin/dumb-init
+ADD https://github.com/krallin/tini/releases/download/v0.18.0/tini-static /tini
+RUN chmod +x /tini
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["bundle", "exec", "ruby", "color.rb"]
+ENTRYPOINT ["/tini", "--"]
+CMD ["/usr/local/bin/bundle", "exec", "ruby", "color.rb"]
 

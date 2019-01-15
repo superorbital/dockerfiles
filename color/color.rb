@@ -1,9 +1,11 @@
 require 'rubygems'
 require 'bundler'
 require 'json'
+require 'logger'
 Bundler.require
 
 $stdout.sync = true
+$stderr.sync = true
 
 ALIVE = true
 
@@ -16,6 +18,15 @@ end
 class Color < Sinatra::Base
   def color
     ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
+  end
+
+  if ENV['LOGFILE']
+    log = File.new(ENV['LOGFILE'], "a+")
+    $stdout.reopen(log)
+    $stderr.reopen(log)
+
+    $stderr.sync = true
+    $stdout.sync = true
   end
 
   get '/' do

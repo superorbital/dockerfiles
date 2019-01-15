@@ -1,1 +1,1 @@
--p 12345:80 -e COLOR=blue -e STARTUP_DELAY=3 --name=color
+-p 12345:80 --name=color -e COLOR=blue
