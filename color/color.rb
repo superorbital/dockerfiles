@@ -41,9 +41,8 @@ class Color < Sinatra::Base
 
   get '/hang' do
     ::ALIVE = false
+    "Hanging..."
   end
-
-  private
 end
 
 printf "Starting up."
