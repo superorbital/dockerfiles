@@ -80,6 +80,6 @@ begin
              bind: '0.0.0.0',
              port: 80)
 rescue StandardError => e
-  File.write("/dev/termination-log", e.to_s + "\n")
+  File.write("/dev/termination-log", e.to_s)
   exit 2
 end
