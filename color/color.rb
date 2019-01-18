@@ -25,17 +25,21 @@ begin
       log = File.new(ENV['LOGFILE'], "a+")
       $stdout.reopen(log)
       $stderr.reopen(log)
-
       $stderr.sync = true
       $stdout.sync = true
     end
 
     get '/' do
-      return JSON.dump({color: color})
+      return JSON.dump({color: color}) + "\n"
     end
 
     get '/env' do
-      return JSON.dump(ENV)
+      return JSON.pretty_generate(ENV.to_h) + "\n"
+    end
+
+    get '/cpuinfo' do
+      out = File.read('/proc/cpuinfo').lines.grep(/model name/)
+      return JSON.pretty_generate(out) + "\n"
     end
 
     get '/exit' do

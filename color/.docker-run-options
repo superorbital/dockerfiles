@@ -1,1 +1,1 @@
--p 12345:80 --name=color -e COLOR=blue -e LOGFILE=/shared/foo
+-p 12345:80 --name=color -e COLOR=blue
