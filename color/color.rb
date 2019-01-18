@@ -37,9 +37,9 @@ begin
       return JSON.pretty_generate(ENV.to_h) + "\n"
     end
 
-    get '/cpuinfo' do
-      out = File.read('/proc/cpuinfo').lines.grep(/model name/)
-      return JSON.pretty_generate(out) + "\n"
+    get '/ping' do
+      ping = ::Net::Ping::External.new('8.8.8.8').ping?
+      return JSON.dump({can_ping: ping}) + "\n"
     end
 
     get '/exit' do
