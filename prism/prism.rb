@@ -15,9 +15,10 @@ class Prism < Sinatra::Base
 
   get "/:color" do
     color = params[:color]
+    puts "Proxying to #{params[:color]}"
     response = HTTParty.get("http://#{color}", timeout: ENV.fetch("TIMEOUT", 3))
     if response.code == 200
-      return response.body
+      return response.body.chomp + "\n"
     else
       return JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
     end
