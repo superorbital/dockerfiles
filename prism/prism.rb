@@ -13,6 +13,16 @@ class Prism < Sinatra::Base
     return "ERROR: Please request /color/red, /color/blue, etc instead.\n"
   end
 
+  get "/egress" do
+    puts "Requesting external URL"
+    response = HTTParty.get("http://api.ipify.org?format=json", timeout: ENV.fetch("TIMEOUT", 3))
+    if response.code == 200
+      return response.body.chomp + "\n"
+    else
+      return JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
+    end
+  end
+
   get "/:color" do
     color = params[:color]
     puts "Proxying to #{params[:color]}"
@@ -25,6 +35,7 @@ class Prism < Sinatra::Base
   rescue StandardError => e
     return JSON.pretty_generate({"error": e.message}) + "\n"
   end
+
 end
 
 Prism.run!(show_exceptions: false,
