@@ -35,7 +35,6 @@ class Prism < Sinatra::Base
   rescue StandardError => e
     return JSON.pretty_generate({"error": e.message}) + "\n"
   end
-
 end
 
 Prism.run!(show_exceptions: false,
