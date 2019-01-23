@@ -4,4 +4,5 @@ WORKDIR /app
 COPY . .
 RUN set -ex && pipenv install --deploy --system
 ENTRYPOINT ["python"]
-CMD [ "webhook.py" ]
+ENV FLASK_APP=webhook.py
+CMD [ "-m", "flask", "run", "--host=0.0.0.0", "--port=80" ]

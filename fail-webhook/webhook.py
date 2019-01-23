@@ -23,5 +23,3 @@ def webhook_endpoint():
       }
     }
   })
-
-webhook.run(host='0.0.0.0', port=80)
