@@ -42,6 +42,10 @@ begin
       return JSON.dump({can_ping: ping}) + "\n"
     end
 
+    get '/whoami' do
+      return "Your IP appears to be #{request.ip}"
+    end
+
     get '/exit' do
       puts "Received request for /exit. Terminating."
       File.open("/dev/termination-log", 'w') do |f|
