@@ -47,7 +47,7 @@ begin
     end
 
     get '/version' do
-      return "v#{File.read('VERSION').chomp}"
+      return "v#{File.read('VERSION')}"
     end
 
     get '/exit' do
