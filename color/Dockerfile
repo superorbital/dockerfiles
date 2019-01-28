@@ -12,5 +12,5 @@ ADD https://github.com/krallin/tini/releases/download/v0.18.0/tini-static /tini
 RUN chmod +x /tini
 
 ENTRYPOINT ["/tini", "--"]
-CMD ["/usr/local/bin/bundle", "exec", "ruby", "color.rb"]
+CMD ["./color.rb"]
 
