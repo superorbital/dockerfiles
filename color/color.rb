@@ -4,17 +4,6 @@ require 'json'
 require 'logger'
 Bundler.require
 
-$stdout.sync = true
-$stderr.sync = true
-
-if ENV['LOGFILE']
-  log = File.new(ENV['LOGFILE'], "a+")
-  $stdout.reopen(log)
-  $stderr.reopen(log)
-  $stderr.sync = true
-  $stdout.sync = true
-end
-
 ALIVE = true
 
 begin
@@ -25,6 +14,23 @@ begin
   end
 
   class Color < Sinatra::Base
+    helpers Sinatra::CustomLogger
+
+    configure do
+      $stdout.sync = true
+      $stderr.sync = true
+
+      if ENV['LOGFILE']
+        log = File.new(ENV['LOGFILE'], "a+")
+        $stdout.reopen(log)
+        $stderr.reopen(log)
+        $stderr.sync = true
+        $stdout.sync = true
+      end
+
+      set :logger, Logger.new($stdout)
+    end
+
     def color
       ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
     end
@@ -47,7 +53,7 @@ begin
     end
 
     get '/version' do
-      return "v#{File.read('VERSION')}"
+      return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
     end
 
     get '/exit' do
