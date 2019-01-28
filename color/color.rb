@@ -7,6 +7,14 @@ Bundler.require
 $stdout.sync = true
 $stderr.sync = true
 
+if ENV['LOGFILE']
+  log = File.new(ENV['LOGFILE'], "a+")
+  $stdout.reopen(log)
+  $stderr.reopen(log)
+  $stderr.sync = true
+  $stdout.sync = true
+end
+
 ALIVE = true
 
 begin
@@ -19,14 +27,6 @@ begin
   class Color < Sinatra::Base
     def color
       ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
-    end
-
-    if ENV['LOGFILE']
-      log = File.new(ENV['LOGFILE'], "a+")
-      $stdout.reopen(log)
-      $stderr.reopen(log)
-      $stderr.sync = true
-      $stdout.sync = true
     end
 
     get '/' do
@@ -44,6 +44,10 @@ begin
 
     get '/whoami' do
       return "Your IP appears to be #{request.ip}"
+    end
+
+    get '/version' do
+      return "v#{File.read('VERSION').chomp}"
     end
 
     get '/exit' do
