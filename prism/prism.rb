@@ -10,7 +10,7 @@ $stderr.sync = true
 
 class Prism < Sinatra::Base
   get '/' do
-    return "ERROR: Please request /color/red, /color/blue, etc instead.\n"
+    return "ERROR: Please request /red, /blue, etc instead.\n"
   end
 
   get "/egress" do
