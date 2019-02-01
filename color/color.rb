@@ -102,7 +102,7 @@ begin
              raise_errors: true,
              traps: false,
              bind: '0.0.0.0',
-             port: 80)
+             port: (ENV["PORT"] || 80))
 
 rescue StandardError => e
   File.write("/dev/termination-log", e.to_s)
