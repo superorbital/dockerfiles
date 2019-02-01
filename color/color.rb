@@ -6,9 +6,9 @@ require 'json'
 require 'logger'
 Bundler.require
 
-ALIVE = true
-
 begin
+  ALIVE = true
+
   Signal.trap("TERM") do
     puts "Caught a TERM signal.  Sleeping for 3 seconds and shutting down."
     sleep 3
@@ -85,13 +85,17 @@ begin
   puts
 
   Thread.new do
-    puts "We're alive!"
-    while ::ALIVE do
-      sleep 1
-      File.write("/tmp/heartbeat", "alive")
+    begin
+      puts "We're alive!"
+      while ::ALIVE do
+          File.write("/tmp/heartbeat", "alive")
+          sleep 1
+      end
+      puts "We're hung :("
+      FileUtils.rm_rf("/tmp/heartbeat")
+    rescue Errno::EROFS
+      puts "Cannot manage /tmp/heartbeat file in a read-only filesystem."
     end
-    puts "We're hung :("
-    FileUtils.rm_rf("/tmp/heartbeat")
   end
 
   Color.run!(show_exceptions: false,
@@ -99,6 +103,7 @@ begin
              traps: false,
              bind: '0.0.0.0',
              port: 80)
+
 rescue StandardError => e
   File.write("/dev/termination-log", e.to_s)
   exit 2
