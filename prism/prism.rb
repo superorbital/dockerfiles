@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'rubygems'
 require 'bundler'
 require 'json'
@@ -11,6 +13,10 @@ $stderr.sync = true
 class Prism < Sinatra::Base
   get '/' do
     return "ERROR: Please request /red, /blue, etc instead.\n"
+  end
+
+  get "/healthz" do
+    return JSON.pretty_generate({"health": "good"}) + "\n"
   end
 
   get "/egress" do
@@ -35,6 +41,7 @@ class Prism < Sinatra::Base
   rescue StandardError => e
     return JSON.pretty_generate({"error": e.message}) + "\n"
   end
+
 end
 
 Prism.run!(show_exceptions: false,
