@@ -19,6 +19,10 @@ class Prism < Sinatra::Base
     return JSON.pretty_generate({"health": "good"}) + "\n"
   end
 
+  get '/version' do
+    return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
+  end
+
   get "/egress" do
     puts "Requesting external URL"
     response = HTTParty.get("http://api.ipify.org?format=json", timeout: ENV.fetch("TIMEOUT", 3))
