@@ -2,10 +2,8 @@
 
 set -eou pipefail
 
-[[ "$#" == 1 ]] && cd "$1"
-
 if [[ ! -f Dockerfile ]]; then
-  echo "Usage: $(basename "$0") [directory]"
+  echo "Usage: $(basename "$0") [extra docker run options]"
   echo "Runs the docker image locally.  Run 'build' first."
   echo
   echo "Error:  No Dockerfile found"
@@ -15,7 +13,9 @@ fi
 user="superorbital"
 image=${PWD##*/}
 
-[[ -f .docker-run-options ]] && OPTIONS=$(< .docker-run-options)
+OPTIONS="$*"
+
+[[ -f .docker-run-options ]] && OPTIONS="$OPTIONS $(< .docker-run-options)"
 
 docker container prune -f
 
