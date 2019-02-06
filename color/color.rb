@@ -42,7 +42,7 @@ begin
     end
 
     get '/env' do
-      return JSON.pretty_generate(ENV.to_h) + "\n"
+      return JSON.pretty_generate(env.to_h) + "\n"
     end
 
     get '/ping' do
