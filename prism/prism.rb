@@ -46,10 +46,12 @@ begin
       if response.code == 200
         return response.body.chomp + "\n"
       else
-        return JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
+        body = JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
+        return [response.code, body]
       end
     rescue StandardError => e
-      return JSON.pretty_generate({"error": e.message}) + "\n"
+      body = JSON.pretty_generate({"error": e.message}) + "\n"
+      return [500, body]
     end
 
     private
