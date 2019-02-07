@@ -33,9 +33,8 @@ begin
       set :logger, Logger.new($stdout)
     end
 
-    def color
-      ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
-    end
+    not_found { "Path #{request.path} is unknown." }
+
 
     get '/' do
       return JSON.dump({color: color}) + "\n"
@@ -58,6 +57,16 @@ begin
       return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
     end
 
+    get '/unstable' do
+      response = [
+        [200, "You got lucky."],
+        [500, "Explode!"],
+      ].sample
+
+      puts "Replying with #{response[0]}: #{response[1]}"
+      return response
+    end
+
     get '/exit' do
       puts "Received request for /exit. Terminating."
       File.open("/dev/termination-log", 'w') do |f|
@@ -68,13 +77,26 @@ begin
     end
 
     get '/sleep' do
+      puts "Sleeping for 10 seconds."
       sleep(10) and return "Slept for 10 seconds"
+    end
+
+    get '/sleep/:seconds' do |seconds|
+      puts "Sleeping for #{seconds} seconds."
+      sleep(seconds.to_i) and return "Slept for #{seconds} seconds"
     end
 
     get '/hang' do
       ::ALIVE = false
       "Hanging..."
     end
+
+    private
+
+    def color
+      ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
+    end
+
   end
 
   printf "Starting up."
