@@ -33,7 +33,7 @@ begin
         return response.body.chomp + "\n"
       else
         body = JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
-        return [response.code, body]
+        return [500, body]
       end
     rescue StandardError => e
       body = JSON.pretty_generate({"error": e.message}) + "\n"
@@ -47,7 +47,7 @@ begin
         return response.body.chomp + "\n"
       else
         body = JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
-        return [response.code, body]
+        return [500, body]
       end
     rescue StandardError => e
       body = JSON.pretty_generate({"error": e.message}) + "\n"
