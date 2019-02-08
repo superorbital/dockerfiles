@@ -35,7 +35,6 @@ begin
 
     not_found { "Path #{request.path} is unknown." }
 
-
     get '/' do
       return JSON.dump({color: color}) + "\n"
     end
@@ -76,19 +75,16 @@ begin
       return "Received request for /exit.  Terminating."
     end
 
-    get '/sleep' do
-      puts "Sleeping for 10 seconds."
-      sleep(10) and return "Slept for 10 seconds"
-    end
-
-    get '/sleep/:seconds' do |seconds|
+    get '/sleep/?:seconds?' do |seconds|
+      seconds ||= 10
       puts "Sleeping for #{seconds} seconds."
-      sleep(seconds.to_i) and return "Slept for #{seconds} seconds"
+      sleep(seconds.to_i)
+      return "Slept for #{seconds} seconds"
     end
 
     get '/hang' do
       ::ALIVE = false
-      "Hanging..."
+      return "Hanging..."
     end
 
     private
