@@ -82,6 +82,13 @@ begin
       return "Slept for #{seconds} seconds"
     end
 
+    get '/expensive/?:count?' do |count|
+      count ||= 50_000_000
+      puts "Finding the square root of #{count} numbers..."
+      count.to_i.times { |i| Math.sqrt(i) }
+      return "Did a bunch of work!"
+    end
+
     get '/hang' do
       ::ALIVE = false
       return "Hanging..."
