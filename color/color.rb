@@ -83,7 +83,7 @@ begin
     end
 
     get '/expensive/?:count?' do |count|
-      count ||= 50_000_000
+      count ||= 50_000
       puts "Finding the square root of #{count} numbers..."
       count.to_i.times { |i| Math.sqrt(i) }
       return "Did a bunch of work!"
