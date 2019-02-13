@@ -82,10 +82,15 @@ begin
       return "Slept for #{seconds} seconds"
     end
 
-    get '/expensive/?:count?' do |count|
-      count ||= 50_000
-      puts "Finding the square root of #{count} numbers..."
-      count.to_i.times { |i| Math.sqrt(i) }
+    get '/expensive/?:seconds?' do |seconds|
+      seconds = (seconds || 5).to_i
+      puts "Doing square roots for #{seconds} seconds..."
+
+      start_time = Time.now
+      until Time.now - start_time > seconds
+        Math.sqrt(rand(100000))
+      end
+
       return "Did a bunch of work!"
     end
 
