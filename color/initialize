@@ -3,7 +3,7 @@
 $stdout.sync = true
 $stderr.sync = true
 
-10.times do |i|
+5.times do |i|
   puts "Initializing phase #{i}..."
   sleep 3
 end
