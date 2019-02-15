@@ -17,5 +17,5 @@ COPY . ./
 EXPOSE 80
 
 ENTRYPOINT ["/tini", "--"]
-CMD ["./color.rb"]
+CMD ["./color"]
 
