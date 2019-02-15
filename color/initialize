@@ -7,4 +7,4 @@ $stderr.sync = true
   puts "Initializing phase #{i}..."
   sleep 3
 end
-puts "Done initializing color."
+puts "Done initializing!"
