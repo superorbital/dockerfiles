@@ -15,6 +15,7 @@ RUN bundle install
 COPY . ./
 
 EXPOSE 80
+ENV PATH="/app:${PATH}"
 
 ENTRYPOINT ["/tini", "--"]
 CMD ["./color"]
