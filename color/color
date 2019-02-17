@@ -48,8 +48,12 @@ begin
       return JSON.dump({can_ping: ping}) + "\n"
     end
 
-    get '/whoami' do
+    get '/clientip' do
       return "Your IP appears to be #{request.ip}"
+    end
+
+    get '/identify' do
+      return JSON.dump({my_pod_name: ENV["POD_NAME"]}) + "\n"
     end
 
     get '/version' do
