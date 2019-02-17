@@ -1,144 +1,75 @@
 #!/usr/bin/env ruby
 
+$stdout.sync = true
+$stderr.sync = true
+
 require 'rubygems'
 require 'bundler'
-require 'json'
-require 'logger'
+require 'pathname'
+require 'socket'
 Bundler.require
 
-begin
-  ALIVE = true
-
-  Signal.trap("TERM") do
-    puts "Caught a TERM signal.  Sleeping for 3 seconds and shutting down."
-    sleep 3
-    exit 3
+class Pathname
+  def append(s)
+    File.open(self.to_s, "a") { |f| f << s }
   end
-
-  class Color < Sinatra::Base
-    helpers Sinatra::CustomLogger
-
-    configure do
-      $stdout.sync = true
-      $stderr.sync = true
-
-      if ENV['LOGFILE']
-        log = File.new(ENV['LOGFILE'], "a+")
-        $stdout.reopen(log)
-        $stderr.reopen(log)
-        $stderr.sync = true
-        $stdout.sync = true
-      end
-
-      set :logger, Logger.new($stdout)
-    end
-
-    not_found { "Path #{request.path} is unknown." }
-
-    get '/' do
-      return JSON.dump({color: color}) + "\n"
-    end
-
-    get '/env' do
-      return JSON.pretty_generate(env.to_h) + "\n"
-    end
-
-    get '/ping' do
-      ping = ::Net::Ping::External.new('8.8.8.8').ping?
-      return JSON.dump({can_ping: ping}) + "\n"
-    end
-
-    get '/clientip' do
-      return "Your IP appears to be #{request.ip}"
-    end
-
-    get '/identify' do
-      return JSON.dump({my_pod_name: ENV["POD_NAME"]}) + "\n"
-    end
-
-    get '/version' do
-      return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
-    end
-
-    get '/unstable' do
-      response = [
-        [200, "You got lucky."],
-        [500, "Explode!"],
-      ].sample
-
-      puts "Replying with #{response[0]}: #{response[1]}"
-      return response
-    end
-
-    get '/exit' do
-      puts "Received request for /exit. Terminating."
-      File.open("/dev/termination-log", 'w') do |f|
-        f.write("Received request for /exit. Terminating.")
-      end
-      Process.kill('TERM', Process.pid)
-      return "Received request for /exit.  Terminating."
-    end
-
-    get '/sleep/?:seconds?' do |seconds|
-      seconds ||= 10
-      puts "Sleeping for #{seconds} seconds."
-      sleep(seconds.to_i)
-      return "Slept for #{seconds} seconds"
-    end
-
-    get '/expensive/?:seconds?' do |seconds|
-      seconds = (seconds || 5).to_i
-      puts "Doing square roots for #{seconds} seconds..."
-
-      start_time = Time.now
-      until Time.now - start_time > seconds
-        Math.sqrt(rand(100000))
-      end
-
-      return "Did a bunch of work!"
-    end
-
-    get '/hang' do
-      ::ALIVE = false
-      return "Hanging..."
-    end
-
-    private
-
-    def color
-      ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
-    end
-
-  end
-
-  printf "Starting up."
-  ENV.fetch('STARTUP_DELAY', 0).to_i.times do |n|
-    printf "."
-    sleep 1
-  end
-  puts
-
-  Thread.new do
-    begin
-      puts "We're alive!"
-      while ::ALIVE do
-          File.write("/tmp/heartbeat", "alive")
-          sleep 1
-      end
-      puts "We're hung :("
-      FileUtils.rm_rf("/tmp/heartbeat")
-    rescue Errno::EROFS
-      puts "Cannot manage /tmp/heartbeat file in a read-only filesystem."
-    end
-  end
-
-  Color.run!(show_exceptions: false,
-             raise_errors: true,
-             traps: false,
-             bind: '0.0.0.0',
-             port: (ENV["PORT"] || 80))
-
-rescue StandardError => e
-  File.write("/dev/termination-log", e.to_s)
-  exit 2
 end
+
+class Stateful < Sinatra::Base
+  not_found { "Path #{request.path} is unknown." }
+
+  get '/' do
+    return DATA_FILE_PATH.read
+  rescue Errno::ENOENT
+    return "No data written."
+  end
+
+  post '/' do
+    request.body.rewind
+    DATA_FILE_PATH.append(request.body.read)
+    return "Data written."
+  end
+
+  put '/' do
+    request.body.rewind
+    DATA_FILE_PATH.append(request.body.read)
+    return "Data written."
+  end
+
+  get '/clear' do
+    DATA_FILE_PATH.delete
+    return "Data cleared."
+  end
+
+  get '/list' do
+    return `ls #{DATA_FILE_PATH.dirname}`
+  end
+
+  get '/identify' do
+    return JSON.dump({hostname: Socket.gethostname}) + "\n"
+  end
+
+  get '/version' do
+    return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
+  end
+end
+
+STARTUP_DELAY     = ENV.fetch('STARTUP_DELAY', 3).to_i
+TERMINATION_DELAY = ENV.fetch('TERMINATION_DELAY', 3).to_i
+DATA_FILE_PATH    = Pathname.new(ENV.fetch('DATA_FILE_PATH', "/data/state"))
+
+Signal.trap("TERM") do
+  printf "Caught a TERM signal.  Terminating."
+  TERMINATION_DELAY.times { |n| printf('.'); sleep(1) }
+  puts
+  exit 3
+end
+
+printf "Starting up."
+STARTUP_DELAY.times { |n| printf('.'); sleep(1) }
+
+Stateful.run!(show_exceptions: false,
+              raise_errors: true,
+              traps: false,
+              bind: '0.0.0.0',
+              port: (ENV["PORT"] || 80))

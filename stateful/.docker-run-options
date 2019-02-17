@@ -1,1 +1,1 @@
--p 9002:80 --name=color -e COLOR=blue --network=containers
+-p 9004:80 --name=stateful --network=containers -e DATA_FILE_PATH=/tmp/stateful-container
