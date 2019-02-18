@@ -3,7 +3,7 @@
 set -eou pipefail
 
 if [[ ! -f Dockerfile ]]; then
-  echo "Usage: $(basename "$0") [extra docker run options]"
+  echo "Usage: $(basename "$0") [CMD]"
   echo "Runs the docker image locally.  Run 'build' first."
   echo
   echo "Error:  No Dockerfile found"
@@ -13,7 +13,7 @@ fi
 user="superorbital"
 image=${PWD##*/}
 
-OPTIONS="$*"
+OPTIONS=""
 
 [[ -f .docker-run-options ]] && OPTIONS="$OPTIONS $(< .docker-run-options)"
 
@@ -21,4 +21,4 @@ docker container prune -f
 
 set -x
 # shellcheck disable=SC2086
-docker run $OPTIONS "$user/$image:latest"
+docker run $OPTIONS "$user/$image:latest" "$@"
