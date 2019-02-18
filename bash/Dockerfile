@@ -48,6 +48,8 @@ RUN apk add --no-cache bash            \
   && pip3 install --upgrade pip setuptools httpie \
   && rm -r /root/.cache
 
+COPY bashrc /root/.bashrc
+COPY bash_profile /root/.bash_profile
 ENTRYPOINT ["/tini", "--"]
 CMD ["/bin/bash", "-il"]
 
