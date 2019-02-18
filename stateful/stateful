@@ -54,19 +54,21 @@ class Stateful < Sinatra::Base
   end
 end
 
-STARTUP_DELAY     = ENV.fetch('STARTUP_DELAY', 3).to_i
+STARTUP_DELAY     = ENV.fetch('STARTUP_DELAY',     3).to_i
 TERMINATION_DELAY = ENV.fetch('TERMINATION_DELAY', 3).to_i
 DATA_FILE_PATH    = Pathname.new(ENV.fetch('DATA_FILE_PATH', "/data/state"))
 
 Signal.trap("TERM") do
-  printf "Caught a TERM signal.  Terminating."
-  TERMINATION_DELAY.times { |n| printf('.'); sleep(1) }
-  puts
+  puts "Caught a TERM signal.  Terminating."
+  sleep(TERMINATION_DELAY)
+  # Suppress exit stacktrace
+  $stderr.reopen(IO::NULL)
+  $stdout.reopen(IO::NULL)
   exit 3
 end
 
-printf "Starting up."
-STARTUP_DELAY.times { |n| printf('.'); sleep(1) }
+puts "Starting up."
+sleep(STARTUP_DELAY)
 
 Stateful.run!(show_exceptions: false,
               raise_errors: true,
