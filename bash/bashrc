@@ -1,1 +1,5 @@
-export PS1="\npod$ "
+if [[ -f /var/run/secrets/kubernetes.io ]]; then
+  export PS1="\npod$ "
+else
+  export PS1="\nbash$ "
+fi
