@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'logger'
+require 'sinatra'
+require 'sinatra/custom_logger'
+
+Signal.trap("TERM") do
+  puts "Caught a TERM signal.  Usually that would kill me, but I'm stubborn.  Try SIGKILL."
+end
+
+%w(EXIT HUP INT QUIT USR1 USR2).each do |signal|
+  Signal.trap(signal) do
+    puts "Caught a #{signal} signal. Ignoring."
+  end
+end
+
+class SignalCatcher < Sinatra::Base
+  helpers Sinatra::CustomLogger
+
+  configure do
+    $stdout.sync = true
+    $stderr.sync = true
+    set :logger, Logger.new($stdout)
+  end
+
+  not_found { "Path #{request.path} is unknown." }
+
+  get '/' do
+    return "I catch signals.  Send me one!\n"
+  end
+
+  get '/version' do
+    return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
+  end
+end
+
+puts ""
+
+SignalCatcher.run!(show_exceptions: false,
+                   raise_errors: true,
+                   traps: false,
+                   bind: '0.0.0.0',
+                   port: (ENV["PORT"] || 8000))
