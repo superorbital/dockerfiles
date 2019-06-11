@@ -15,6 +15,5 @@ COPY . ./
 
 EXPOSE 80
 
-# ENTRYPOINT ["/tini", "--"]
 CMD ["./signal-catcher"]
 
