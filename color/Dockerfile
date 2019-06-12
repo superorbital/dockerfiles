@@ -1,4 +1,4 @@
-FROM library/ruby:2.5-alpine
+FROM library/ruby:2.6-slim
 
 RUN mkdir /app
 WORKDIR /app
