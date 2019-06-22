@@ -1,6 +1,5 @@
 FROM library/ruby:2.6-slim
 
-RUN mkdir /app
 WORKDIR /app
 
 ADD https://github.com/krallin/tini/releases/download/v0.18.0/tini-static /tini
