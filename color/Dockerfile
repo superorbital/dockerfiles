@@ -12,6 +12,7 @@ COPY Gemfile* ./
 RUN bundle install
 
 COPY . ./
+RUN chmod ugo+x color initialize
 
 EXPOSE 80
 ENV PATH="/app:${PATH}"
