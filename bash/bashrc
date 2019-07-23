@@ -1,4 +1,4 @@
-if [[ -f /var/run/secrets/kubernetes.io ]]; then
+if [[ -d /var/run/secrets/kubernetes.io ]]; then
   export PS1="\npod$ "
 else
   export PS1="\ncontainer$ "
