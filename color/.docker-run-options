@@ -1,1 +1,1 @@
--p 9002:8080 --name=color -e COLOR=blue --network=containers --user=1000:2000 --read-only -e PORT=8080
+-p 9002:80 --name=color -e COLOR=blue --network=containers
