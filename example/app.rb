@@ -27,6 +27,10 @@ class App < Sinatra::Base
     `env | sort`
   end
 
+  get `/files` do
+    `grep "" /config`
+  end
+
   get '/disk' do
     `df -h`
   end
@@ -37,8 +41,8 @@ class App < Sinatra::Base
 
   get '/exit' do
     puts "Gaaaaahhhh!  Someone hit /exit!"
-    File.open("/dev/termination-log", 'w') do |f| 
-      f.write("Gaaaaahhhh!  Someone hit /exit!") 
+    File.open("/dev/termination-log", 'w') do |f|
+      f.write("Gaaaaahhhh!  Someone hit /exit!")
     end
     Process.kill('TERM', Process.pid)
     return "Gaaaaaah!"
@@ -62,7 +66,7 @@ class App < Sinatra::Base
   def pod
     ENV["MY_POD_NAME"]
   end
-  
+
   def namespace
     ENV["MY_POD_NAMESPACE"]
   end
@@ -73,4 +77,3 @@ class App < Sinatra::Base
 end
 
 App.run! show_exceptions: false, raise_errors: true, traps: false, bind: '0.0.0.0', port: 5000
-
