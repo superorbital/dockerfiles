@@ -28,7 +28,7 @@ class App < Sinatra::Base
   end
 
   get `/files` do
-    `grep "" /config`
+    `grep "" /config/*`
   end
 
   get '/disk' do
