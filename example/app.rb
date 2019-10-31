@@ -27,7 +27,7 @@ class App < Sinatra::Base
     `env | sort`
   end
 
-  get `/files` do
+  get '/files' do
     `grep "" /config/*`
   end
 
