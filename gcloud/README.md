@@ -6,20 +6,20 @@ Forked from [messari/docker-google-cloud-sdk-auth-wrapper](https://github.com/me
 
 Mount your service account jon file into the container as `/sa.json`:
 
-``` console
-$ docker run \
-$   -v $(pwd)/service_account.json:/sa.json \
-$   superorbital/gcloud \
-$   gcloud compute instances list --project my-project
+``` bash
+docker run \
+  --mount "type=bind,source=$(pwd)/fake_sa.json,target=/sa.json" \
+  superorbital/gcloud \
+  gcloud compute instances list --project my-project
 ```
 
 The `WORKDIR` is set to `/work`, so any uploads or downloads should happen via
 host volume mounts against that directory:
 
-``` console
-$ docker run \
-$   -v $(pwd)/service_account.json:/sa.json \
-$   -v $(pwd)/files:/work \
-$   superorbital/gcloud \
-$   gsutil cp gs://bucket/* .
+``` bash
+docker run \
+  --mount "type=bind,source=$(pwd)/fake_sa.json,target=/sa.json" \
+  --mount "type=bind,source=$(pwd)/,target=/work" \
+  superorbital/gcloud \
+  gsutil cp gs://bucket/* .
 ```

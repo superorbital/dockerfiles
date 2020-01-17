@@ -2,7 +2,6 @@
 set -e
 
 main() {
-  ls -las /
   [[ -f /sa.json ]] || usage "Must mount service account credentials into /sa.json"
 
   gcloud auth activate-service-account --key-file=/sa.json
