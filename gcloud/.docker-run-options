@@ -1,0 +1,1 @@
+--mount "type=bind,source=$(pwd)/fake_sa.json,target=/sa.json" --mount "type=bind,source=$(pwd)/,target=/work"
