@@ -4,7 +4,7 @@ set -e
 main() {
   [[ -f /sa.json ]] || usage "Must mount service account credentials into /sa.json"
 
-  gcloud auth activate-service-account --key-file=/sa.json --quiet 2>&1 | grep -v "Activating"
+  gcloud auth activate-service-account --key-file=/sa.json --quiet 2>&1 | grep -v "Activated service account"
 
   exec "$@"
 }
