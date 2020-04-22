@@ -21,4 +21,4 @@ docker container prune -f
 
 set -x
 # shellcheck disable=SC2086
-docker run $OPTIONS "$user/$image:latest" "$@"
+eval docker run $OPTIONS "$user/$image:latest" "$@"
