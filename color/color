@@ -43,7 +43,7 @@ begin
     end
 
     get '/env' do
-      return JSON.pretty_generate(env.to_h) + "\n"
+      return JSON.pretty_generate(ENV.to_h) + "\n"
     end
 
     get '/ping' do
@@ -55,12 +55,12 @@ begin
       return "Your IP appears to be #{request.ip}"
     end
 
-    get '/identify' do
-      return JSON.dump({my_pod_name: ENV["POD_NAME"]}) + "\n"
+    get '/version' do
+      return JSON.dump({version: version}) + "\n"
     end
 
-    get '/version' do
-      return JSON.dump({version: File.read('VERSION').chomp}) + "\n"
+    get '/result' do
+      return JSON.dump({color: color, verison: version})
     end
 
     get '/unstable' do
@@ -110,6 +110,10 @@ begin
 
     def color
       ENV['COLOR'] || 'UNKNOWN.  Please set the $COLOR environment variable.'
+    end
+
+    def version
+      ENV["VERSION"] || File.read('VERSION').chomp
     end
 
   end
