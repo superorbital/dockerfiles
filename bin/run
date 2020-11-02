@@ -13,7 +13,7 @@ fi
 user="superorbital"
 image=${PWD##*/}
 
-OPTIONS=""
+OPTIONS=${OPTIONS:-""}
 
 [[ -f .docker-run-options ]] && OPTIONS="$OPTIONS $(< .docker-run-options)"
 
