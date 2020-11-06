@@ -69,7 +69,7 @@ begin
 
     get '/unstable' do
       response = [
-        [200, "You got lucky."],
+        [200, JSON.dump({"luck": "preserved!"})],
         [500, "Explode!"],
       ].sample
 
@@ -90,7 +90,7 @@ begin
       seconds ||= 10
       puts "Sleeping for #{seconds} seconds."
       sleep(seconds.to_i)
-      return "Slept for #{seconds} seconds"
+      return JSON.dump({slept: seconds.to_i})
     end
 
     get '/expensive/?:seconds?' do |seconds|
