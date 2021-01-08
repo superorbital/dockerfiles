@@ -45,7 +45,7 @@ class App < Sinatra::Base
       f.write("Gaaaaahhhh!  Someone hit /exit!")
     end
     Process.kill('TERM', Process.pid)
-    return "Gaaaaaah!"
+    return "Gaaaaaah!\n"
   end
 
   get '/sleep' do
