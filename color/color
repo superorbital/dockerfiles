@@ -110,6 +110,10 @@ begin
       return "Hanging..."
     end
 
+    get "/healthz" do
+      return JSON.pretty_generate({"health": "good"}) + "\n"
+    end
+
     private
 
     def request_headers
