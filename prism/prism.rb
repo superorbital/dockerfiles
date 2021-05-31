@@ -18,6 +18,10 @@ begin
       return "ERROR: Please request /red, /blue, etc instead.\n"
     end
 
+    get '/headers' do
+      return JSON.pretty_generate(request_headers.to_h) + "\n"
+    end
+
     get "/healthz" do
       return JSON.pretty_generate({"health": "good"}) + "\n"
     end
@@ -81,6 +85,11 @@ begin
     def request_header(name)
       rackified_name = "HTTP_" + name.tr('-', '_').upcase
       env[rackified_name]
+    end
+
+    def request_headers
+      env.select { |k,v| k.start_with? 'HTTP_'}.
+        transform_keys { |k| k.sub(/^HTTP_/, '').split('_').map(&:capitalize).join('-') }
     end
 
   end
