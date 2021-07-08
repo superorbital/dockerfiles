@@ -70,6 +70,9 @@ end
 puts "Starting up."
 sleep(STARTUP_DELAY)
 
+# Ensure the data file path parent directories are there
+DATA_FILE_PATH.parent.mkpath
+
 Stateful.run!(show_exceptions: false,
               raise_errors: true,
               traps: false,

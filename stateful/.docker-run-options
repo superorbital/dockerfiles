@@ -1,1 +1,1 @@
--p 9004:80 --name=stateful --network=containers -e DATA_FILE_PATH=/tmp/stateful-container
+-p 9004:80 --name=stateful --network=containers -e DATA_FILE_PATH=./tmp/foo/stateful-container
