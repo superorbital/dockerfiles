@@ -3,11 +3,12 @@ require 'bundler'
 Bundler.require
 
 $stdout.sync = true
+$exit_code = 0
 
 Signal.trap("TERM") do
   puts "Caught a TERM signal.  Sleeping for 3 seconds and shutting down."
   sleep 3
-  exit
+  exit $exit_code
 end
 
 class App < Sinatra::Base
@@ -44,6 +45,7 @@ class App < Sinatra::Base
     File.open("/dev/termination-log", 'w') do |f|
       f.write("Gaaaaahhhh!  Someone hit /exit!")
     end
+    $exit_code = 2
     Process.kill('TERM', Process.pid)
     return "Gaaaaaah!\n"
   end
