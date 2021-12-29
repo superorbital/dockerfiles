@@ -110,7 +110,7 @@ begin
       return "Hanging..."
     end
 
-    get "/healthz" do
+    get '/healthz' do
       return JSON.pretty_generate({"health": "good"}) + "\n"
     end
 
