@@ -1,0 +1,1 @@
+-e LISTEN_HOST=0.0.0.0 -p 8080:8080 --name=starwars -env
