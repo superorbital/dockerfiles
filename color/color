@@ -64,7 +64,7 @@ begin
     end
 
     get '/result' do
-      return JSON.dump({color: color, verison: version})
+      return JSON.dump({color: color, version: version})
     end
 
     get '/unstable' do
