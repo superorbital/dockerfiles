@@ -50,7 +50,8 @@ begin
       if response.code == 200
         return response.body.chomp + "\n"
       else
-        body = JSON.pretty_generate({"error": response.body, "code": response.code}) + "\n"
+        payload = json_or_string(response.body)
+        body = JSON.pretty_generate({"error": payload, "code": response.code}) + "\n"
         return [500, body]
       end
     rescue StandardError => e
@@ -66,6 +67,12 @@ begin
 
     def timeout
       ENV.fetch("TIMEOUT", 3)
+    end
+
+    def json_or_string(value)
+      JSON.parse(value)
+    rescue JSON::ParserError
+      value
     end
 
     def istio_trace_headers_from_request
