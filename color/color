@@ -78,7 +78,8 @@ begin
     end
 
     get '/error' do
-      response = [500, JSON.dump({"error": "not enough magic"})]
+      payload = {"error": "not enough magic", "hostname": ENV["HOSTNAME"]}
+      response = [500, JSON.dump(payload)]
       puts "Replying with #{response[0]}: #{response[1]}"
       return response
     end
