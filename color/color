@@ -77,6 +77,13 @@ begin
       return response
     end
 
+    get '/error' do
+      payload = {"error": "not enough magic", "hostname": ENV["HOSTNAME"]}
+      response = [500, JSON.dump(payload)]
+      puts "Replying with #{response[0]}: #{response[1]}"
+      return response
+    end
+
     get '/exit' do
       puts "Received request for /exit. Terminating."
       File.open("/dev/termination-log", 'w') do |f|
