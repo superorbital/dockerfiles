@@ -2,7 +2,7 @@ FROM ruby:2.6
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl stress-ng
 RUN curl -sSLo /tini https://github.com/krallin/tini/releases/download/v0.18.0/tini-static
 RUN chmod +x /tini
 
